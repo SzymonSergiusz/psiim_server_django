@@ -129,4 +129,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-# AUTHENTICATION_BACKENDS = ['serverapp.user_auth_backend.UserAuthBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # 'serverapp.user_auth_backend.UserAuthBackend'
+]
+AUTH_USER_MODEL = "serverapp.Users"

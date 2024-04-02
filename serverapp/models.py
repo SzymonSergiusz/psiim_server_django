@@ -3,23 +3,24 @@ import uuid
 from django.contrib.auth.hashers import make_password
 from django.db import models
 
-from django.contrib.auth.models import BaseUserManager, AbstractUser
+from django.contrib.auth.models import AbstractUser
+from .managers import CustomUserManager
 # Create your models here.
 
 # Tables
-class Users(models.Model):
+class Users(AbstractUser):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=256, unique=True)
-    email = models.CharField(max_length=256, unique=True)
+    email = models.EmailField(unique=True)
     password = models.CharField(max_length=512)  # todo czy to nie będzie za krótkie na hashe
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    objects = CustomUserManager()
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
-
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #         self.password = make_password(self.password)
-    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.email} {self.username}'
