@@ -24,3 +24,14 @@ class MountainViewSet(viewsets.ModelViewSet):
 # TODO
 # https://docs.djangoproject.com/en/5.0/topics/auth/passwords/#module-django.contrib.auth.hashers
 
+
+class UserLoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)  # Ustanawianie sesji
+            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
